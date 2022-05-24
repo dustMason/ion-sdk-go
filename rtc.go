@@ -699,7 +699,8 @@ func (r *RTC) onSignalHandle() error {
 				log.Errorf("suscription error: %v", payload.Subscription.Error)
 			}
 		case *rtc.Reply_Error:
-			if payload.Error.Reason == "goaway" && r.OnGoAway != nil {
+			const redirect int32 = 302
+			if payload.Error.Code == redirect && r.OnGoAway != nil {
 				r.OnGoAway()
 			} else {
 				log.Errorf("Unhandled RTC error!!!!%v", payload)
