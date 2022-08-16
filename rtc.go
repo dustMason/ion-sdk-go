@@ -739,28 +739,8 @@ func (r *RTC) SendJoin(sid string, uid string, offer webrtc.SessionDescription, 
 }
 
 func (r *RTC) SendTrickle(candidate *webrtc.ICECandidate, target Target) {
-	log.Debugf("[C=>S] [%v] candidate=%v target=%v", r.uid, candidate, target)
-	bytes, err := json.Marshal(candidate.ToJSON())
-	if err != nil {
-		log.Errorf("error: %v", err)
-		return
-	}
+	// Don't really need to trickle from client to server
 	go r.onSignalHandleOnce()
-	r.Lock()
-	err = r.stream.Send(
-		&rtc.Request{
-			Payload: &rtc.Request_Trickle{
-				Trickle: &rtc.Trickle{
-					Target: rtc.Target(target),
-					Init:   string(bytes),
-				},
-			},
-		},
-	)
-	r.Unlock()
-	if err != nil {
-		log.Errorf("[%v] err=%v", r.uid, err)
-	}
 }
 
 func (r *RTC) SendOffer(sdp webrtc.SessionDescription) error {
