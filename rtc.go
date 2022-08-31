@@ -225,7 +225,6 @@ func (r *RTC) Join(sid, uid string, config ...*JoinConfig) error {
 					r.apiQueue = []Call{}
 				}
 			})
-			return
 		}
 		log.Debugf("%v got dc %v", r.uid, dc.Label())
 		if r.OnDataChannel != nil {
